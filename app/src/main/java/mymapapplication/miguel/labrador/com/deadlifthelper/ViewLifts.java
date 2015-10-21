@@ -1,6 +1,8 @@
 package mymapapplication.miguel.labrador.com.deadlifthelper;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,6 +10,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.app.AlertDialog.Builder;
+
+import java.util.Locale;
 
 public class ViewLifts extends AppCompatActivity {
 
@@ -16,7 +21,9 @@ public class ViewLifts extends AppCompatActivity {
     /***************************/
 
     private String username;    //Holds username from intent from Main Activity.
-    private String weight;      //Holds weight from intent from Main Activity.
+    private String weight;  //Holds weight from intent from Main Activity.
+
+    public SQLiteDatabase db;
 
 
     /*****************************/
@@ -67,14 +74,49 @@ public class ViewLifts extends AppCompatActivity {
 
         setFilters.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 navigateTo_setFilters(view);
             }
         });
 
+        //displayPreviousLifts();
+
     }
 
 
+
+    public void displayPreviousLifts() {
+
+        String name1, weight1;
+
+        Cursor c=db.rawQuery("SELECT * FROM deadlift", null);
+        if(c.getCount()==0)
+        {
+            //print error message
+            showMessage("Error", "No records found");
+            return;
+        }
+        StringBuffer buffer=new StringBuffer();
+        while(c.moveToNext())
+        {
+            buffer.append("name: "+c.getString(0)+"\n");
+            buffer.append("weight: "+c.getString(1)+"\n");
+
+        }
+        showMessage("Student Details", buffer.toString());
+
+    }
+
+
+
+    public void showMessage(String title,String message)
+    {
+        Builder builder=new Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.show();
+    }
 
 
 

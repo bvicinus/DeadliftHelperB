@@ -1,6 +1,8 @@
 package mymapapplication.miguel.labrador.com.deadlifthelper;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+
 
 public class MainScreen extends AppCompatActivity {
 
@@ -28,7 +32,7 @@ public class MainScreen extends AppCompatActivity {
     /*****************************/
     /*****Private Variables******/
     /***************************/
-
+    public SQLiteDatabase db;
 
 
     /*****************************/
@@ -56,6 +60,10 @@ public class MainScreen extends AppCompatActivity {
         //username_text and weight_text respectively.
         itent_recordDeadlift.putExtra(USERNAME, username_text);
         itent_recordDeadlift.putExtra(WEIGHT, weight_text);
+
+
+        //add to sql database
+        db.execSQL("INSERT INTO deadlift VALUES('"+username_text+"','"+weight_text+"');");
 
         //Finally, start the Record Deadlift activity.
         startActivity(itent_recordDeadlift);
@@ -151,9 +159,13 @@ public class MainScreen extends AppCompatActivity {
                 navigateTo_TimerCount(view);
             }
         });
+
+
+        db=openOrCreateDatabase("DeadliftDB", Context.MODE_PRIVATE, null);
+        db.execSQL("CREATE TABLE IF NOT EXISTS deadlift(name VARCHAR,weight VARCHAR);");
     }
 
-    
+
 
 
 

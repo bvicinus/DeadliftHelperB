@@ -25,7 +25,7 @@ public class TimerCount extends AppCompatActivity {
 
         timer = intent_mainActivity.getStringExtra(MainScreen.TIMER);
         int amount = 30;
-        startTimer(amount);
+        //startTimer(amount);
 
     }
 
